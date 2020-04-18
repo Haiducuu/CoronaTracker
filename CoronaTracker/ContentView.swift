@@ -32,7 +32,6 @@ struct Case: Decodable {
     
     var cases: Double
     var deaths: Double
-    var updated: Double
     var recovered: Double
     var active: Double
 }
@@ -43,14 +42,13 @@ struct Details: Decodable,Hashable {
     var cases: Double
     var deaths: Double
     var recovered: Double
-    var critical: Double
     var active: Double
 }
 
 class getData: ObservableObject {
     
-    @Published var data: Case!
-    @Published var ro: Case!
+    @Published var data = [Case]()
+    @Published var ro = [Case]()
     @Published var countries = [Details]()
     
     init() {
@@ -60,9 +58,9 @@ class getData: ObservableObject {
     
     func updateData(){
         
-        let url = "https://corona.lmao.ninja/all"
-        let url1 = "https://corona.lmao.ninja/countries/"
-        let url2 = "https://corona.lmao.ninja/countries/ro"
+        let url = "https://corona.lmao.ninja/v2/all"
+        let url1 = "https://corona.lmao.ninja/v2/countries/"
+        let url2 = "https://corona.lmao.ninja/v2/countries/ro"
         
         let session = URLSession(configuration: .default)
         let session1 = URLSession(configuration: .default)
@@ -78,9 +76,11 @@ class getData: ObservableObject {
             
             let json = try! JSONDecoder().decode(Case.self, from: data!)
             
+            print(json.active)
+            
             DispatchQueue.main.async {
                 
-                self.data = json
+                self.data.append(json)
             }
             
         }.resume()
@@ -95,16 +95,18 @@ class getData: ObservableObject {
             
             let json = try! JSONDecoder().decode(Case.self, from: data!)
             
+            print(json.active)
+            
             DispatchQueue.main.async {
                 
-                self.ro = json
+                self.ro.append(json)
             }
             
         }.resume()
         
         for i in country {
             
-            session1.dataTask(with: URL(string: url1+i)!) { (data, _, err) in
+            session1.dataTask(with: URL(string: url1 + i)!) { (data, _, err) in
                 
                 if err != nil {
                     
@@ -113,6 +115,8 @@ class getData: ObservableObject {
                 }
                 
                 let json = try! JSONDecoder().decode(Details.self, from: data!)
+                
+                print(json.country)
                 
                 DispatchQueue.main.async {
                     
@@ -125,7 +129,7 @@ class getData: ObservableObject {
     }
 }
 
-var country = ["usa", "italy", "spain", "france", "germany", "china", "uk", "romania"]
+var country = ["uk", "romania", "usa", "italy"]
 
 
 

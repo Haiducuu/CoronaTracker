@@ -30,7 +30,7 @@ struct Home : View {
             
             VStack {
                 
-                if self.data.countries.count != 0 && self.data.data != nil && self.data.ro != nil {
+                if self.data.ro.count != 0 {
                     VStack{
                         
                         
@@ -46,8 +46,9 @@ struct Home : View {
                             
                             Button(action: {
                                 
-                                self.data.data = nil
+                                self.data.data.removeAll()
                                 self.data.countries.removeAll()
+                                self.data.ro.removeAll()
                                 self.data.updateData()
                                 
                             }) {
@@ -76,7 +77,7 @@ struct Home : View {
                                             .font(.system(size: 20))
                                             .foregroundColor(Color(#colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)))
                                         
-                                        Text(getValue(data: self.data.ro.active))
+                                        Text(getValue(data: data.ro[0].active))
                                             .font(.title)
                                             .fontWeight(.bold)
                                             .foregroundColor(Color.white)
@@ -88,7 +89,7 @@ struct Home : View {
                                             .font(.system(size: 20))
                                         .foregroundColor(Color(#colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)))
                                         
-                                        Text(getValue(data: self.data.ro.recovered))
+                                        Text(getValue(data: data.ro[0].recovered))
                                             .font(.title)
                                             .fontWeight(.bold)
                                             .foregroundColor(Color.white)
@@ -100,7 +101,7 @@ struct Home : View {
                                             .font(.system(size: 20))
                                         .foregroundColor(Color(#colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)))
                                         
-                                        Text(getValue(data: self.data.ro.deaths))
+                                        Text(getValue(data: data.ro[0].deaths))
                                             .font(.title)
                                             .fontWeight(.bold)
                                             .foregroundColor(Color.white)
@@ -114,21 +115,21 @@ struct Home : View {
                                     ZStack(alignment: .bottom) {
                                         Capsule().frame(width: 30, height: 200)
                                             .foregroundColor(Color(#colorLiteral(red: 0, green: 0.738790859, blue: 0.7528861771, alpha: 1)))
-                                        Capsule().frame(width: 30, height: CGFloat(self.data.ro.recovered/3.5))
+                                        Capsule().frame(width: 30, height: CGFloat(self.data.ro[0].recovered/10))
                                             .foregroundColor(.white)
                                     }
                                     
                                     ZStack(alignment: .bottom) {
                                         Capsule().frame(width: 30, height: 200)
                                             .foregroundColor(Color(#colorLiteral(red: 0, green: 0.738790859, blue: 0.7528861771, alpha: 1)))
-                                        Capsule().frame(width: 30, height: CGFloat(self.data.ro.deaths/5))
+                                        Capsule().frame(width: 30, height: CGFloat(self.data.ro[0].deaths/5))
                                             .foregroundColor(.white)
                                     }
                                     
                                     ZStack(alignment: .bottom) {
                                         Capsule().frame(width: 30, height: 200)
                                             .foregroundColor(Color(#colorLiteral(red: 0, green: 0.738790859, blue: 0.7528861771, alpha: 1)))
-                                        Capsule().frame(width: 30, height: CGFloat(self.data.ro.deaths/10))
+                                        Capsule().frame(width: 30, height: CGFloat(self.data.ro[0].deaths/10))
                                             .foregroundColor(.white)
                                     }
                                 }.padding(.top, 24)
@@ -145,7 +146,7 @@ struct Home : View {
                                         .font(.system(size: 24))
                                     .foregroundColor(Color(#colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)))
                                     
-                                    Text(getValue(data: self.data.data.cases))
+                                    Text(getValue(data: data.data[0].active))
                                         .fontWeight(.bold)
                                         .font(.title)
                                         .foregroundColor(.white)
@@ -160,7 +161,7 @@ struct Home : View {
                                             .font(.system(size: 24))
                                         .foregroundColor(Color(#colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)))
                                         
-                                        Text(getValue(data: self.data.data.recovered))
+                                        Text(getValue(data: data.data[0].recovered))
                                             .fontWeight(.bold)
                                             .font(.title)
                                             .foregroundColor(.white)
@@ -175,7 +176,7 @@ struct Home : View {
                                             .font(.system(size: 24))
                                         .foregroundColor(Color(#colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)))
                                         
-                                        Text(getValue(data: self.data.data.deaths))
+                                        Text(getValue(data: data.data[0].deaths))
                                             .fontWeight(.bold)
                                             .font(.title)
                                             .foregroundColor(.white)
